@@ -4,38 +4,40 @@ import java.util.Map;
 /**
  * Created by Tobias on 09.11.2016.
  */
-public class Highscore {
-    private SQLiteJDBC dataAccess = new SQLiteJDBC();
+public class Highscore implements HighscoreServer {
+    private DataAccess dataAccess = new DataAccess();
 
     public void setHighscores(HashMap<String, Integer> highscores) {
         for (Map.Entry<String, Integer> highscore : highscores.entrySet()) {
             String playerName = highscore.getKey();
-            Integer score = highscore.getValue();
-
             HashMap<String, Integer> player = getPlayer(playerName);
-
-            if (player != null) {
-                Map.Entry<String,Integer> entry=player.entrySet().iterator().next();
-                Integer oldPlayerScore=entry.getValue();
-                if (oldPlayerScore < score) {
-                    updateHighscore(playerName, score);
-                }
-            } else {
-                insertHighscore(playerName, score);
-            }
+            insertIfPlayerPresent(player, playerName, highscore.getValue());
         }
     }
 
     public HashMap<String, Integer> getHighscores() {
-        return dataAccess.selectData("SELECT * FROM highscore");
+        return dataAccess.getAllhighscores();
+    }
+
+    private void insertIfPlayerPresent(HashMap<String, Integer> player, String playerName, Integer score) {
+        System.out.println(player.size());
+        if (player.size() == 0) {
+            insertHighscore(playerName, score);
+        } else {
+            updateIfHigherScore(player, playerName, score);
+        }
+    }
+
+    private void updateIfHigherScore(HashMap<String, Integer> player, String playerName, Integer score) {
+        Map.Entry<String, Integer> entry = player.entrySet().iterator().next();
+        Integer oldPlayerScore = entry.getValue();
+        if (oldPlayerScore < score) {
+            updateHighscore(playerName, score);
+        }
     }
 
     private HashMap<String, Integer> getPlayer(String playerName) {
-        HashMap<String, Integer> result = dataAccess.selectData("SELECT * FROM highscore WHERE name = '" + playerName + "'");
-        if (result.size() > 0) {
-            return result;
-        }
-        return null;
+        return dataAccess.getHighscoresByPlayerName(playerName);
     }
 
     private void updateHighscore(String playerName, int score) {
@@ -48,12 +50,12 @@ public class Highscore {
 
     public static void main(String[] args) {
         Highscore hs = new Highscore();
-        SQLiteJDBC sq = new SQLiteJDBC();
+        DataAccess sq = new DataAccess();
         HashMap<String, Integer> hm = new HashMap<>();
-        hm.put("Tobias", 301);
+        hm.put("Tobias2", 302);
         hs.setHighscores(hm);
 
-        HashMap<String, Integer> r = sq.selectData("SELECT * FROM highscore");
+        HashMap<String, Integer> r = sq.getAllhighscores();
 
         for (Map.Entry<String, Integer> entry : r.entrySet()) {
             String key = entry.getKey().toString();

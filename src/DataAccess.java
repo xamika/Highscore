@@ -5,9 +5,9 @@ import org.sqlite.SQLiteConfig;
 
 import java.sql.*;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 
-public class SQLiteJDBC {
+public class DataAccess {
 
     private Connection connect() {
         // SQLite connection string
@@ -21,7 +21,16 @@ public class SQLiteJDBC {
         return conn;
     }
 
-    public HashMap<String, Integer> selectData(String sql){
+    public HashMap<String, Integer> getAllhighscores() {
+        return selectData("SELECT * FROM Highscore");
+    }
+
+    public HashMap<String, Integer> getHighscoresByPlayerName(String name) {
+        return selectData("SELECT * FROM Highscore WHERE name = '" + name + "'");
+    }
+
+
+    private HashMap<String, Integer> selectData(String sql){
         HashMap result = new HashMap();
 
         try (Connection conn = connect();
