@@ -21,6 +21,7 @@ public class HighscoreTest {
 	public void setUp() throws Exception {
 		dataAccess = mock(DataAccess.class);
 		highscore = new Highscore();
+		highscore.setDataAccess(dataAccess);
 	}
 	
 	@Test
@@ -31,7 +32,6 @@ public class HighscoreTest {
 		HashMap<String, Integer> oldHighscore = new HashMap<>();
 		when(dataAccess.getHighscoresByPlayerName(any())).thenReturn(oldHighscore);
 		doNothing().when(dataAccess).insertData(any(), any());
-		highscore.setDataAccess(dataAccess);
 		
 		highscore.setHighscores(highscores);
 		verify(dataAccess, times(2)).insertData(any(), any());
@@ -46,8 +46,7 @@ public class HighscoreTest {
 		oldHighscore.put("test", 10);
 		when(dataAccess.getHighscoresByPlayerName(any())).thenReturn(oldHighscore);
 		doNothing().when(dataAccess).updateData(any(), any());
-		highscore.setDataAccess(dataAccess);
-		
+
 		highscore.setHighscores(highscores);
 		verify(dataAccess, times(2)).updateData(any(), any());
 	}
@@ -60,7 +59,6 @@ public class HighscoreTest {
 		HashMap<String, Integer> oldHighscore = new HashMap<>();
 		oldHighscore.put("test", 300);
 		when(dataAccess.getHighscoresByPlayerName(any())).thenReturn(oldHighscore);
-		highscore.setDataAccess(dataAccess);
 		
 		highscore.setHighscores(highscores);
 		verify(dataAccess, times(2)).getHighscoresByPlayerName(any());
@@ -71,7 +69,6 @@ public class HighscoreTest {
 		HashMap<String, Integer> highscores = new HashMap<>();
 		highscores.put("test", 22);
 		when(dataAccess.getAllHighscores()).thenReturn(highscores);
-		highscore.setDataAccess(dataAccess);
 		
 		assertEquals(highscore.getHighscores(), highscores);
 	}
@@ -81,7 +78,6 @@ public class HighscoreTest {
 		HashMap<String, Integer> highscores = new HashMap<>();
 		highscores.put("test", 22);
 		when(dataAccess.getHighscoresByPlayerName("test")).thenReturn(highscores);
-		highscore.setDataAccess(dataAccess);
 		
 		assertEquals(highscore.searchHighscoreByPlayerName("test"), highscores);
 	}
