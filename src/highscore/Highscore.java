@@ -31,7 +31,7 @@ public class Highscore implements HighscoreServer {
 
     private void insertIfPlayerPresent(HashMap<String, Integer> player, String playerName, Integer score) {
         if (player.size() == 0) {
-            insertHighscore(playerName, score);
+            dataAccess.insertData(playerName, score);
         } else {
             updateIfHigherScore(player, playerName, score);
         }
@@ -41,17 +41,8 @@ public class Highscore implements HighscoreServer {
         Map.Entry<String, Integer> entry = player.entrySet().iterator().next();
         Integer oldPlayerScore = entry.getValue();
         if (oldPlayerScore < score) {
-            updateHighscore(playerName, score);
+            dataAccess.updateData(playerName, score);
         }
-    }
-
-
-    private void updateHighscore(String playerName, int score) {
-        dataAccess.updateData(playerName, score);
-    }
-
-    private void insertHighscore(String playerName, int score) {
-        dataAccess.insertData(playerName, score);
     }
 
     public static void main(String[] args) {
