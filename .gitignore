@@ -1,10 +1,2 @@
-
-.idea/compiler.xml
-.idea/copyright/
-.idea/dataSources.local.xml
-.idea/dataSources/
-.idea/misc.xml
-.idea/modules.xml
-.idea/workspace.xml
-out/
-highscore.db
+/bin/
+/highscore.db
