@@ -16,8 +16,8 @@ public class Highscore implements HighscoreServer {
 	public void setHighscores(HashMap<String, Integer> highscores) {
         for (Map.Entry<String, Integer> highscore : highscores.entrySet()) {
             String playerName = highscore.getKey();
-            HashMap<String, Integer> player = searchHighscoreByPlayerName(playerName);
-            insertIfPlayerPresent(player, playerName, highscore.getValue());
+            HashMap<String, Integer> player = getHighscoreByPlayerName(playerName);
+            insertOrUpdatePlayer(player, playerName, highscore.getValue());
         }
     }
 
@@ -25,11 +25,11 @@ public class Highscore implements HighscoreServer {
         return dataAccess.getAllHighscores();
     }
     
-    public HashMap<String, Integer> searchHighscoreByPlayerName(String playerName) {
+    public HashMap<String, Integer> getHighscoreByPlayerName(String playerName) {
         return dataAccess.getHighscoresByPlayerName(playerName);
     }
 
-    private void insertIfPlayerPresent(HashMap<String, Integer> player, String playerName, Integer score) {
+    private void insertOrUpdatePlayer(HashMap<String, Integer> player, String playerName, Integer score) {
         if (player.size() == 0) {
             dataAccess.insertData(playerName, score);
         } else {
@@ -48,7 +48,7 @@ public class Highscore implements HighscoreServer {
     public static void main(String[] args) {
     	Highscore hs = new Highscore();
 		
-        HashMap<String, Integer> r = hs.searchHighscoreByPlayerName("Tobias");
+        HashMap<String, Integer> r = hs.getHighscoreByPlayerName("Tobias");
 
         for (Map.Entry<String, Integer> entry : r.entrySet()) {
             String key = entry.getKey().toString();

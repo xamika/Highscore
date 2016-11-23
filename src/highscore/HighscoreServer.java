@@ -8,5 +8,5 @@ import java.util.HashMap;
 public interface HighscoreServer {
     void setHighscores(HashMap<String, Integer> highscores);
     HashMap<String, Integer> getHighscores();
-    HashMap<String, Integer> searchHighscoreByPlayerName(String name);
+    HashMap<String, Integer> getHighscoreByPlayerName(String name);
 }

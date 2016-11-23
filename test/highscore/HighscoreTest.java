@@ -83,7 +83,7 @@ public class HighscoreTest {
 		when(dataAccess.getHighscoresByPlayerName("test")).thenReturn(highscores);
 		highscore.setDataAccess(dataAccess);
 		
-		assertEquals(highscore.searchHighscoreByPlayerName("test"), highscores);
+		assertEquals(highscore.getHighscoreByPlayerName("test"), highscores);
 	}
 
 }
